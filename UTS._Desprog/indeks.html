@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Pendaftaran Anggota Baru IMKOBI MALANG 2025</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
     
     <script src="jquery-3.7.1.js"></script>
 </head>
@@ -12,20 +12,44 @@
     <div class="container">
         <h1>Pendaftaran Anggota Baru IMKOBI MALANG 2025</h1>
 
-        <form id="userForm" method="POST" action="process.php">
+       <form id="userForm" method="POST" action="process.php" novalidate>
 
             <div class="form-group">
                 <label for="nama">Nama Lengkap:</label>
-                <input type="text" id="nama" name="nama" placeholder="Cth: Siti Aisyah" required>
+                <input type="text" id="nama" name="nama" placeholder="Cth: Siti Aisyah" >
                 <div class="error-message" id="nama-error"></div>
             </div>
 
             <div class="form-group">
                 <label for="email">Email Aktif:</label>
-                <input type="email" id="email" name="email" placeholder="Cth: aisyah@mahasiswa.ac.id" required>
+                <input type="email" id="email" name="email" placeholder="Cth: aisyah@mahasiswa.ac.id" >
                 <div class="error-message" id="email-error"></div>
             </div>
+            
+            <div class="form-group">
+                <label for="asal_sekolah">Asal Sekolah:</label>
+                <input type="text" id="asal_sekolah" name="asal_sekolah" placeholder="Cth: SMAN 1 Bima" >
+                <div class="error-message" id="asal_sekolah-error"></div>
+            </div>
 
+            <div class="form-group">
+                <label for="kampus_jurusan">Kampus & Jurusan:</label>
+                <input type="text" id="kampus_jurusan" name="kampus_jurusan" placeholder="Cth: Polinema / Teknik Elektro" >
+                <div class="error-message" id="kampus_jurusan-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="bidang_pilihan">Bidang Pilihan:</label>
+                <select id="bidang_pilihan" name="bidang_pilihan" required>
+                    <option value="">-- Pilih Bidang --</option>
+                    <option value="Humas">Humas</option>
+                    <option value="Pendikbud">Pendikbud</option>
+                    <option value="Kerohanian">Kerohanian</option>
+                    <option value="Keorganisasian">Keorganisasian</option>
+                    <option value="Wirausaha">Wirausaha</option>
+                </select>
+                <div class="error-message" id="bidang_pilihan-error"></div>
+            </div>
             <div class="form-group">
                 <label for="komentar">Pesan Singkat & Motivasi Bergabung:</label>
                 <textarea id="komentar" name="komentar" placeholder="Contoh: Ingin memperluas jaringan dan berkontribusi untuk daerah." rows="4"></textarea>
@@ -45,25 +69,23 @@
 
             $('#userForm').submit(function(e) {
                 let isValid = true;
-                $('.error-message').text('').hide(); 
+                $('.error-message').text('').hide();
 
                 const nama = $('#nama').val().trim();
                 const email = $('#email').val().trim();
+                const asalSekolah = $('#asal_sekolah').val().trim();
+                const kampusJurusan = $('#kampus_jurusan').val().trim();
+                const bidangPilihan = $('#bidang_pilihan').val();
                 const komentar = $('#komentar').val().trim();
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+                if (nama === '') { $('#nama-error').text('Nama wajib diisi.').slideDown(); isValid = false; }
+                if (email === '' || !emailRegex.test(email)) { $('#email-error').text('Format email tidak valid atau kosong.').slideDown(); isValid = false; }
 
-                if (nama === '') {
-                    $('#nama-error').text('Nama wajib diisi.').slideDown();
-                    isValid = false;
-                }
+                if (asalSekolah === '') { $('#asal_sekolah-error').text('Asal Sekolah wajib diisi.').slideDown(); isValid = false; }
+                if (kampusJurusan === '') { $('#kampus_jurusan-error').text('Kampus & Jurusan wajib diisi.').slideDown(); isValid = false; }
+                
 
-                if (email === '') {
-                    $('#email-error').text('Email wajib diisi.').slideDown();
-                    isValid = false;
-                } else if (!emailRegex.test(email)) {
-                    $('#email-error').text('Format email tidak valid.').slideDown();
-                    isValid = false;
-                }
+                if (bidangPilihan === '') { $('#bidang_pilihan-error').text('Pilih salah satu bidang.').slideDown(); isValid = false; }
 
                 if (komentar.length <= 10) {
                     $('#komentar-error').text('Motivasi harus lebih dari 10 karakter.').slideDown();
@@ -73,7 +95,7 @@
                 if (isValid) {
                     $(this).slideUp(800);
                 } else {
-                    e.preventDefault(); 
+                    e.preventDefault();
                 }
             });
         });
